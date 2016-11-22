@@ -89,7 +89,8 @@ public class PieTranslator extends PieBaseVisitor<Object>
     }
 
     @Override
-    public Object visitBlock(PieParser.BlockContext ctx) {
+    public Object visitBlock(PieParser.BlockContext ctx)
+    {
         System.out.println("Sto visitando BLOCK e contengo " + ctx.getText());
         int localCount = 0;
         for (PieParser.StatementContext con : ctx.statement()) {
@@ -129,7 +130,8 @@ public class PieTranslator extends PieBaseVisitor<Object>
         return null;
     }
 
-    @Override public Object visitStatIf(PieParser.StatIfContext ctx) {								// blocco if
+    @Override public Object visitStatIf(PieParser.StatIfContext ctx)
+    {								// blocco if
         System.out.println("Sto visitando IFTHENELSE e contengo " + ctx.getText());
         visit(ctx.expr());																			// visito l'espressione di condizione
         loopCount++;
@@ -146,19 +148,22 @@ public class PieTranslator extends PieBaseVisitor<Object>
     }
 
     @Override
-    public Object visitStatFunctionCall(PieParser.StatFunctionCallContext ctx) {
+    public Object visitStatFunctionCall(PieParser.StatFunctionCallContext ctx)
+    {
         System.out.println("Sto visitando STAT FUNCTION CALL e contengo " + ctx.getText());
         return null;
     }
 
     @Override
-    public Object visitStatNL(PieParser.StatNLContext ctx) {
+    public Object visitStatNL(PieParser.StatNLContext ctx)
+    {
         System.out.println("Sto visitando STAT NL e contengo " + ctx.getText());
         return null;
     }
 
     @Override
-    public Object visitFunctionCall(PieParser.FunctionCallContext ctx) {
+    public Object visitFunctionCall(PieParser.FunctionCallContext ctx)
+    {
         System.out.println("Sto visitando FUNCTION CALL e contengo " + ctx.getText());
         for (PieParser.ExprContext exp : ctx.expr())
         {
@@ -185,14 +190,16 @@ public class PieTranslator extends PieBaseVisitor<Object>
     }
 
     @Override
-    public Object visitExprFunctionCall(PieParser.ExprFunctionCallContext ctx) {
+    public Object visitExprFunctionCall(PieParser.ExprFunctionCallContext ctx)
+    {
         System.out.println("Sto visitando EXPR FUNCTION CALL e contengo " + ctx.getText());
         visit(ctx.functionCall());
         return null;
     }
 
     @Override
-    public Object visitExprMult(PieParser.ExprMultContext ctx) {
+    public Object visitExprMult(PieParser.ExprMultContext ctx)
+    {
         System.out.println("Sto visitando EXPR MULT e contengo " + ctx.getText());
         for (PieParser.ExprContext exp : ctx.expr())
         {
@@ -214,7 +221,8 @@ public class PieTranslator extends PieBaseVisitor<Object>
     }
 
     @Override
-    public Object visitExprParens(PieParser.ExprParensContext ctx) {
+    public Object visitExprParens(PieParser.ExprParensContext ctx)
+    {
         System.out.println("Sto visitando EXPR PARENS e contengo " + ctx.getText());
         return null;
     }
@@ -229,14 +237,16 @@ public class PieTranslator extends PieBaseVisitor<Object>
     }
 
     @Override
-    public Object visitExprInt(PieParser.ExprIntContext ctx) {
+    public Object visitExprInt(PieParser.ExprIntContext ctx)
+    {
         System.out.println("Sto visitando EXPR INT e contengo " + ctx.getText());
         assembly.add("iconst " + ctx.INT());
         return null;
     }
 
     @Override
-    public Object visitExprAdd(PieParser.ExprAddContext ctx) {
+    public Object visitExprAdd(PieParser.ExprAddContext ctx)
+    {
         System.out.println("Sto visitando EXPR ADD e contengo " + ctx.getText());
         for (PieParser.ExprContext exp : ctx.expr())
         {

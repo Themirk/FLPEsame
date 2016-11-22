@@ -36,7 +36,7 @@ public class Interpreter
 
     //MAIN
     public static void main(String[] args) throws Exception {
-        InputStream input = new FileInputStream(new File("test/prova3.asm"));
+        InputStream input = new FileInputStream(new File("test/fatt.asm"));
         Interpreter interpreter = new Interpreter();
         load(interpreter, input);		// popola i campi dell'interprete
         /*
