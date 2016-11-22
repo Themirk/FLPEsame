@@ -1,0 +1,4 @@
+.globals 1
+.def main: args=0 ,locals=1
+sconst "ciao"
+print

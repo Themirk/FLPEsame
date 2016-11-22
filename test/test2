@@ -1,0 +1,31 @@
+.globals 1
+.def main: args=0 ,locals=1
+iconst 0
+gstore 0
+iconst -9
+store 0
+load 0
+loop:
+sconst "loop"
+print
+load 0
+iconst 1
+iadd
+store 0
+load 0
+iconst 0
+ieq
+brf somma
+sconst "Fine"
+print
+halt
+somma: 
+sconst "somma"
+print
+gload 0
+iconst 1
+iadd
+gstore 0
+gload 0
+print
+br loop

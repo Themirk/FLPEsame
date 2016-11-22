@@ -1,0 +1,18 @@
+.def main: args=0, locals=0
+print
+iconst 5
+iconst 2
+iadd
+print
+halt
+.def funzione: args=1, locals=0
+store 0
+load 0
+iconst 5
+ilt
+brf jumpIf_1
+print
+br jumpElse_1
+jumpIf_1
+print
+jumpElse_1

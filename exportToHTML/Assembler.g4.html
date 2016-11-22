@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Assembler.g4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(102,14,122); }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+.s4 { color: rgb(71,71,142); }
+.s5 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Assembler.g4</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">grammar </span><span class="s2">Assembler</span><span class="s1">; 
+ 
+ 
+</span><span class="s3">// START: members</span><span class="s1"> 
+@</span><span class="s4">members </span><span class="s1">{ 
+    // Define the functionality required by the parser for code generation 
+    protected void gen(Token instrToken){;} 
+    protected void gen(Token instrToken, Token operandToken){;} 
+    protected void checkForUnresolvedReferences(){;} 
+    protected void defineFunction(Token idToken, int nargs, int nlocals){;} 
+    protected void defineDataSize(int n) {;} 
+    protected void defineLabel(Token idToken) {;} 
+} 
+</span><span class="s3">// END: members</span><span class="s1"> 
+ 
+</span><span class="s4">program</span><span class="s1"> 
+    :   </span><span class="s4">globals</span><span class="s1">? 
+    ( </span><span class="s4">functionDeclaration </span><span class="s1">|</span><span class="s4">labelAddress</span><span class="s1">| </span><span class="s4">instr  </span><span class="s1">) 
+    (</span><span class="s2">NEWLINE</span><span class="s1">+( </span><span class="s4">functionDeclaration </span><span class="s1">|</span><span class="s4">labelAddress</span><span class="s1">| </span><span class="s4">instr</span><span class="s1">))* 
+    </span><span class="s2">NEWLINE</span><span class="s1">* 
+        {checkForUnresolvedReferences();} 
+    ; 
+     
+</span><span class="s4">globals </span><span class="s1">: </span><span class="s2">NEWLINE</span><span class="s1">* </span><span class="s5">'.globals' </span><span class="s2">INT NEWLINE </span><span class="s1">{defineDataSize($INT.int);} ; 
+ 
+ 
+</span><span class="s3">//  .def fact: args=1, locals=0</span><span class="s1"> 
+</span><span class="s4">functionDeclaration</span><span class="s1"> 
+    : </span><span class="s5">'.def' </span><span class="s4">name</span><span class="s1">=</span><span class="s2">ID </span><span class="s5">':' 'args' '=' </span><span class="s4">a</span><span class="s1">=</span><span class="s2">INT </span><span class="s5">',' 'locals' '=' </span><span class="s4">n</span><span class="s1">=</span><span class="s2">INT</span><span class="s1">  
+      {defineFunction($name, $a.int, $n.int);} 
+    ; 
+ 
+ 
+</span><span class="s4">labelAddress</span><span class="s1"> 
+    :   </span><span class="s2">ID </span><span class="s5">':' </span><span class="s1">{defineLabel($ID);} 
+    ; 
+</span><span class="s4">instr</span><span class="s1"> 
+    :   </span><span class="s2">ID </span><span class="s4">operand              </span><span class="s1">{gen($ID,$operand.start);} 
+    |   </span><span class="s2">ID                 </span><span class="s1">{gen($ID);} 
+    ; 
+ 
+</span><span class="s4">operand</span><span class="s1"> 
+    :   </span><span class="s2">FUNC </span><span class="s3">// function label; E.g., &quot;f()&quot;</span><span class="s1"> 
+    |   </span><span class="s2">ID</span><span class="s1"> 
+    |   </span><span class="s2">FLOAT</span><span class="s1"> 
+    |   </span><span class="s2">STRING</span><span class="s1"> 
+    |   </span><span class="s2">INT</span><span class="s1"> 
+    ; 
+ 
+ 
+</span><span class="s2">ID  </span><span class="s1">:   </span><span class="s2">LETTER </span><span class="s1">(</span><span class="s2">LETTER </span><span class="s1">| </span><span class="s5">'0'</span><span class="s1">..</span><span class="s5">'9'</span><span class="s1">)* ; 
+ 
+</span><span class="s2">FUNC</span><span class="s1">:   </span><span class="s2">ID </span><span class="s5">'()' </span><span class="s1">{;} ; 
+ 
+</span><span class="s0">fragment</span><span class="s1"> 
+</span><span class="s2">LETTER</span><span class="s1"> 
+    :   (</span><span class="s5">'a'</span><span class="s1">..</span><span class="s5">'z' </span><span class="s1">| </span><span class="s5">'A'</span><span class="s1">..</span><span class="s5">'Z'</span><span class="s1">) 
+    ; 
+     
+</span><span class="s2">INT </span><span class="s1">:   </span><span class="s5">'-'</span><span class="s1">? </span><span class="s5">'0'</span><span class="s1">..</span><span class="s5">'9'</span><span class="s1">+ ; 
+ 
+ 
+</span><span class="s2">STRING</span><span class="s1">: </span><span class="s5">'\&quot;' </span><span class="s2">STR_CHARS </span><span class="s5">'\&quot;' </span><span class="s1">{;} ; 
+ 
+</span><span class="s0">fragment </span><span class="s2">STR_CHARS </span><span class="s1">: ~</span><span class="s5">'&quot;'</span><span class="s1">* ; 
+ 
+</span><span class="s2">FLOAT</span><span class="s1"> 
+    :   </span><span class="s2">INT </span><span class="s5">'.' </span><span class="s2">INT</span><span class="s1">* 
+    |   </span><span class="s5">'.' </span><span class="s2">INT</span><span class="s1">+ 
+    |   </span><span class="s2">INT </span><span class="s5">',' </span><span class="s2">INT</span><span class="s1">* 
+    |   </span><span class="s5">',' </span><span class="s2">INT</span><span class="s1">+ 
+    ; 
+ 
+</span><span class="s2">WS  </span><span class="s1">:   (</span><span class="s5">' '</span><span class="s1">|</span><span class="s5">'\t'</span><span class="s1">)+ {skip();} ; 
+ 
+</span><span class="s2">NEWLINE</span><span class="s1"> 
+    :   (</span><span class="s5">';' </span><span class="s1">. )* </span><span class="s5">'\r'</span><span class="s1">? </span><span class="s5">'\n'  </span><span class="s3">// optional comment followed by newline</span><span class="s1"> 
+    ; 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,6 @@
+print f(4)
+
+def f(y):
+  if y == 0 return 1
+  else return f(y - 1) * y
+.

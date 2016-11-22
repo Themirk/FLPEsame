@@ -1,0 +1,11 @@
+print (ciao)
+print 5 + 2
+
+struct ID { ciao, ciao2, ciao3 }
+
+
+def funzione ( x ) if x < 5 print "sono 5"
+else print "non sono 5"
+
+
+
